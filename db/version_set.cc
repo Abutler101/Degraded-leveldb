@@ -18,6 +18,7 @@
 #include "table/two_level_iterator.h"
 #include "util/coding.h"
 #include "util/logging.h"
+#include "boost/container/set.hpp"
 
 namespace leveldb {
 
@@ -585,7 +586,7 @@ class VersionSet::Builder {
 
   typedef std::set<FileMetaData*, BySmallestKey> FileSet;
   struct LevelState {
-    std::set<uint64_t> deleted_files;
+    boost::container::set<uint64_t> deleted_files;
     FileSet* added_files;
   };
 

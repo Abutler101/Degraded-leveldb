@@ -18,6 +18,7 @@
 #include "leveldb/options.h"
 #include "leveldb/status.h"
 #include "leveldb/write_batch.h"
+#include "boost/container/small_vector.hpp"
 
 using leveldb::Cache;
 using leveldb::Comparator;
@@ -113,7 +114,7 @@ struct leveldb_filterpolicy_t : public FilterPolicy {
 
   void CreateFilter(const Slice* keys, int n, std::string* dst) const override {
     std::vector<const char*> key_pointers(n);
-    std::vector<size_t> key_sizes(n);
+    boost::container::small_vector<size_t,6> key_sizes(n);
     for (int i = 0; i < n; i++) {
       key_pointers[i] = keys[i].data();
       key_sizes[i] = keys[i].size();

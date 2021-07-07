@@ -37,6 +37,8 @@
 #include "leveldb/comparator.h"
 #include "leveldb/db.h"
 #include "leveldb/env.h"
+#include "boost/container/small_vector.hpp"
+#include "boost/container/stable_vector.hpp"
 
 namespace leveldb {
 
@@ -435,10 +437,10 @@ class Repairer {
   TableCache* table_cache_;
   VersionEdit edit_;
 
-  std::vector<std::string> manifests_;
-  std::vector<uint64_t> table_numbers_;
-  std::vector<uint64_t> logs_;
-  std::vector<TableInfo> tables_;
+  boost::container::small_vector<std::string,6> manifests_;
+  boost::container::stable_vector<uint64_t> table_numbers_;
+  boost::container::small_vector<uint64_t,5> logs_;
+  boost::container::stable_vector<TableInfo> tables_;
   uint64_t next_file_number_;
 };
 }  // namespace

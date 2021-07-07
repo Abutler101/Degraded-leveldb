@@ -16,6 +16,8 @@
 
 #include "leveldb/slice.h"
 #include "util/hash.h"
+#include "boost/container/small_vector.hpp"
+#include "boost/container/stable_vector.hpp"
 
 namespace leveldb {
 
@@ -43,10 +45,10 @@ class FilterBlockBuilder {
 
   const FilterPolicy* policy_;
   std::string keys_;             // Flattened key contents
-  std::vector<size_t> start_;    // Starting index in keys_ of each key
+  boost::container::small_vector<size_t,8> start_;    // Starting index in keys_ of each key
   std::string result_;           // Filter data computed so far
-  std::vector<Slice> tmp_keys_;  // policy_->CreateFilter() argument
-  std::vector<uint32_t> filter_offsets_;
+  boost::container::small_vector<Slice,8> tmp_keys_;  // policy_->CreateFilter() argument
+  boost::container::stable_vector<uint32_t> filter_offsets_;
 };
 
 class FilterBlockReader {

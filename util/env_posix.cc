@@ -34,6 +34,7 @@
 #include "port/thread_annotations.h"
 #include "util/env_posix_test_helper.h"
 #include "util/posix_logger.h"
+#include "boost/container/set.hpp"
 
 namespace leveldb {
 
@@ -484,7 +485,7 @@ class PosixLockTable {
 
  private:
   port::Mutex mu_;
-  std::set<std::string> locked_files_ GUARDED_BY(mu_);
+  boost::container::set<std::string> locked_files_ GUARDED_BY(mu_);
 };
 
 class PosixEnv : public Env {

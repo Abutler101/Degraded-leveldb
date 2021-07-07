@@ -34,6 +34,7 @@
 #include "util/coding.h"
 #include "util/logging.h"
 #include "util/mutexlock.h"
+#include "boost/container/small_vector.hpp"
 
 namespace leveldb {
 
@@ -76,7 +77,7 @@ struct DBImpl::CompactionState {
   // we can drop all entries for the same key with sequence numbers < S.
   SequenceNumber smallest_snapshot;
 
-  std::vector<Output> outputs;
+  boost::container::small_vector<Output,6> outputs;
 
   // State kept for output being generated
   WritableFile* outfile;
@@ -239,7 +240,7 @@ void DBImpl::RemoveObsoleteFiles() {
   env_->GetChildren(dbname_, &filenames);  // Ignoring errors on purpose
   uint64_t number;
   FileType type;
-  std::vector<std::string> files_to_delete;
+  boost::container::small_vector<std::string,5> files_to_delete;
   for (std::string& filename : filenames) {
     if (ParseFileName(filename, &number, &type)) {
       bool keep = true;
@@ -345,7 +346,7 @@ Status DBImpl::Recover(VersionEdit* edit, bool* save_manifest) {
   versions_->AddLiveFiles(&expected);
   uint64_t number;
   FileType type;
-  std::vector<uint64_t> logs;
+  boost::container::small_vector<uint64_t,5> logs;
   for (size_t i = 0; i < filenames.size(); i++) {
     if (ParseFileName(filenames[i], &number, &type)) {
       expected.erase(number);

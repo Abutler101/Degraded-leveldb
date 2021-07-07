@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "db/dbformat.h"
+#include "boost/container/small_vector.hpp"
 
 namespace leveldb {
 
@@ -96,9 +97,9 @@ class VersionEdit {
   bool has_next_file_number_;
   bool has_last_sequence_;
 
-  std::vector<std::pair<int, InternalKey>> compact_pointers_;
+  boost::container::small_vector<std::pair<int, InternalKey>,6> compact_pointers_;
   DeletedFileSet deleted_files_;
-  std::vector<std::pair<int, FileMetaData>> new_files_;
+  boost::container::small_vector<std::pair<int, FileMetaData>,5> new_files_;
 };
 
 }  // namespace leveldb
